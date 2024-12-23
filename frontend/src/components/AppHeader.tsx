@@ -92,15 +92,16 @@ export const AppHeader = () => {
                 </div>
 
             </div>
-            <div style={{display: "flex", justifyContent: "left", flexDirection: "row", backgroundColor: "#38244F"}}>
+            <div style={{display: "flex", justifyContent: "left", flexDirection: "row", backgroundColor: "#38244F"}}
+                 className={styles.appHeader}>
                 <Button variant="subtle" color="rgba(255, 255, 255, 1)" size="md"
-                        radius="md" onClick={() => navigate('/category')}>
+                        radius="md" onClick={() => navigate('/category/1')}>
                     2D</Button>
                 <Button variant="subtle" color="rgba(255, 255, 255, 1)" size="md"
-                        radius="md" onClick={() => navigate('/category')}>
+                        radius="md" onClick={() => navigate('/category/2')}>
                     3D</Button>
                 <Button variant="subtle" color="rgba(255, 255, 255, 1)" size="md"
-                        radius="md" onClick={() => navigate('/category')}>
+                        radius="md" onClick={() => navigate('/category/3')}>
                     SFX</Button>
             </div>
 

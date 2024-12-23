@@ -22,7 +22,7 @@ const routes: RouteObject[] = [
                 element: <MainPage></MainPage>
             },
             {
-                path: "/category",
+                path: "/category/:id",
                 element: <CategoryPage></CategoryPage>
             },
             {
