@@ -1,0 +1,21 @@
+.appHeader {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    background-color: #4caf50;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 1.2rem;
+
+}
+
+.appHeader a {
+    text-decoration: none;
+    color: white;
+}
+
+.appHeader a:hover {
+    text-decoration: underline;
+}

@@ -1,9 +1,10 @@
 import {Outlet} from "react-router-dom";
-import {Header} from "./Header.tsx";
+import {AppHeader} from "./AppHeader.tsx";
+import styles from "./Layout.module.css"
 
-export const Layout = () =>{
-    return(<div>
-        <Header/>
+export const Layout = () => {
+    return (<div className={styles.app}>
+        <AppHeader/>
         <Outlet/>
     </div>)
 }

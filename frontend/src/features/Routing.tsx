@@ -1,4 +1,4 @@
-import {RouteObject, useRoutes} from "react-router-dom";
+import {Navigate, RouteObject, useRoutes} from "react-router-dom";
 import {Layout} from "../components/Layout.tsx";
 import {MainPage} from "./shop/MainPage.tsx";
 import {CategoryPage} from "./shop/CategoryPage.tsx";
@@ -13,6 +13,10 @@ const routes: RouteObject[] = [
         path: "/",
         element: <Layout></Layout>,
         children: [
+            {
+                index: true,
+                element: <Navigate to="/home" replace/>,
+            },
             {
                 path: "/home",
                 element: <MainPage></MainPage>
