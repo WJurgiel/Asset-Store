@@ -1,25 +1,14 @@
-import React, {useEffect, useState} from "react";
-import axios from "axios";
+import React from "react";
 import {AssetGridItem} from "./AssetGridItem.tsx";
 import {AssetGridItemProps} from "../types/AssetGriditemProps.ts";
 
-const AssetGrid: React.FC = () => {
-    const [assets, setAssets] = useState<AssetGridItemProps[]>([]);
-    useEffect(() => {
-        axios.get('http://localhost:3000/api/assets')
-            .then((res) => {
-                setAssets(res.data);
-            })
-            .catch((err) => {
-                console.log("Error fetching: ", err);
-            });
-    }, []);
+const AssetGrid: React.FC<AssetGridItemProps> = ({assets}) => {
     return (
         assets.length > 0 ?
             <div
                 style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(5, 1fr)',
+                    gridTemplateColumns: 'repeat(6, 1fr)',
                     gridAutoRows: '400px',
                     gap: '16px',
                     marginLeft: '20px',
@@ -29,7 +18,7 @@ const AssetGrid: React.FC = () => {
                     alignItems: 'center',
                 }}
             >
-                {assets.slice(0, 5).map((asset) => (
+                {assets.map((asset) => (
                     <AssetGridItem
                         key={asset.ID}
                         name={asset.name}

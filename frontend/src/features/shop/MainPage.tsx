@@ -2,10 +2,15 @@ import {ActionIcon, rem} from "@mantine/core";
 import {IconCube, IconMusic, IconSquare} from "@tabler/icons-react";
 import {useNavigate} from "react-router-dom";
 import AssetGrid from "../../components/AssetGrid.tsx";
+import {useFetchAssets} from "../../hooks/useFetchAssets.ts";
 
 
 export const MainPage = () => {
     const navigate = useNavigate();
+    const {assets, loading, error} = useFetchAssets('http://localhost:3000/api/assets');
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
     return (
         <>
             {/*welcome*/}
@@ -65,7 +70,8 @@ export const MainPage = () => {
                 </div>
             </div>
             {/*Recent uploads page*/}
-            <AssetGrid/>
+            <div style={{fontSize: "25px", textAlign: "center", marginBottom: "5px"}}>Latest assets:</div>
+            <AssetGrid assets={assets}/>
         </>
     )
 }
