@@ -1,24 +1,16 @@
 import {ActionIcon, rem} from "@mantine/core";
 import {IconCube, IconMusic, IconSquare} from "@tabler/icons-react";
 import {useNavigate} from "react-router-dom";
-import {AssetGridItem} from "../../components/AssetGridItem.tsx";
+import AssetGrid from "../../components/AssetGrid.tsx";
+import {useFetchAssets} from "../../hooks/useFetchAssets.ts";
 
-const data = [
-    {
-        imageSrc: 'https://res.cloudinary.com/dzk2ijwpn/image/upload/v1735024841/samples/animals/cat.jpg',
-        title: 'Title 1',
-        author: 'Author1',
-        rate: 5
-    },
-    {
-        imageSrc: 'https://res.cloudinary.com/dzk2ijwpn/image/upload/v1735024842/samples/food/fish-vegetables.jpg',
-        title: 'Title 2',
-        author: 'Author 2',
-        rate: 2.5,
-    },
-];
+
 export const MainPage = () => {
     const navigate = useNavigate();
+    const {assets, loading, error} = useFetchAssets('http://localhost:3000/api/assets');
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
     return (
         <>
             {/*welcome*/}
@@ -78,29 +70,8 @@ export const MainPage = () => {
                 </div>
             </div>
             {/*Recent uploads page*/}
-            <div>
-                {/*placeholder for recent projects, grid*/}
-                <h1 style={{padding: "0 16px"}}>Checkout newest assets!</h1>
-                <div
-                    style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fill, 300px)',
-                        gridAutoRows: '400px',
-                        gap: '16px',
-                        justifyContent: 'center',
-                    }}
-                >
-                    {data.map((item, index) => (
-                        <AssetGridItem
-                            key={index}
-                            imageSrc={item.imageSrc}
-                            title={item.title}
-                            author={item.author}
-                            rate={item.rate}
-                        />
-                    ))}
-                </div>
-            </div>
+            <div style={{fontSize: "25px", textAlign: "center", marginBottom: "5px"}}>Latest assets:</div>
+            <AssetGrid assets={assets}/>
         </>
     )
 }

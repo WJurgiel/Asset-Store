@@ -1,0 +1,32 @@
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.icon{
+    cursor: pointer;
+    color: #888;
+    transition: color 0.3s, transform 0.3s;
+}
+.icon:hover{
+    transform: scale(1.2);
+}
+.nameLabel{
+    font-size: 22px;
+    font-weight: bold;
+}
+.authorLabel{
+    font-size: 14px;
+    color: #555;
+}

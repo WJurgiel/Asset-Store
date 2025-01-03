@@ -1,22 +1,12 @@
 import React from 'react'
 import {AssetGridItemProps} from "../types/AssetGriditemProps.ts";
 import {Rating} from "@mantine/core";
+import {IconHeart, IconShoppingCartPlus} from "@tabler/icons-react";
+import styles from './AssetGridItem.module.css'
 
-export const AssetGridItem: React.FC<AssetGridItemProps> = ({imageSrc, title, author, rate}) => {
+export const AssetGridItem: React.FC<AssetGridItemProps> = ({name, img_url, author, rate, price}) => {
     return (
-        <div
-            style={{
-                border: '1px solid #ddd',
-                borderRadius: '8px',
-                overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                height: '100%',
-                padding: '16px',
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            }}
-        >
+        <div className={styles.card}>
             <div
                 style={{
                     width: '100%',
@@ -29,8 +19,8 @@ export const AssetGridItem: React.FC<AssetGridItemProps> = ({imageSrc, title, au
                 }}
             >
                 <img
-                    src={imageSrc}
-                    alt={title}
+                    src={img_url}
+                    alt={`${name} by ${author}`}
                     style={{
                         maxWidth: '100%',
                         maxHeight: '100%',
@@ -40,22 +30,30 @@ export const AssetGridItem: React.FC<AssetGridItemProps> = ({imageSrc, title, au
             </div>
             <div
                 style={{
-                    marginTop: '100px',
+                    marginTop: '10px',
                     textAlign: 'left',
                 }}
             >
-                <div>
-                    <b>{title}</b>
-                </div>
-                <div style={{color: '#555', fontSize: '14px'}}>{author}</div>
+                <div className={styles.nameLabel}>{name}</div>
+                <div className={styles.authorLabel}>{author}</div>
             </div>
             <div
                 style={{
-                    marginTop: '8px',
+                    marginTop: '4px',
                     textAlign: 'center',
                 }}
             >
                 <Rating value={rate} fractions={2} readOnly/>
+            </div>
+            <div style={{color: '#555', fontSize: '14px'}}>{`PRICE: ${price} ZL`}</div>
+            {/*action buttons*/}
+            <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'left',
+            }}>
+                <IconHeart className={styles.icon}></IconHeart>
+                <IconShoppingCartPlus className={styles.icon}></IconShoppingCartPlus>
             </div>
         </div>
     );
