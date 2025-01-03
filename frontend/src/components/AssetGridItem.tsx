@@ -4,7 +4,7 @@ import {Rating} from "@mantine/core";
 import {IconHeart, IconShoppingCartPlus} from "@tabler/icons-react";
 import styles from './AssetGridItem.module.css'
 
-export const AssetGridItem: React.FC<AssetGridItemProps> = ({name, img, author, rate, price}) => {
+export const AssetGridItem: React.FC<AssetGridItemProps> = ({name, img_url, author, rate, price}) => {
     return (
         <div className={styles.card}>
             <div
@@ -19,7 +19,7 @@ export const AssetGridItem: React.FC<AssetGridItemProps> = ({name, img, author, 
                 }}
             >
                 <img
-                    src={img}
+                    src={img_url}
                     alt={`${name} by ${author}`}
                     style={{
                         maxWidth: '100%',
