@@ -11,6 +11,7 @@ import {
 } from "@nestjs/common";
 import { AssetService } from "./asset.service";
 import { CreateAssetsDto } from "./Dto/create-asset.dto";
+import { CreateRateDto } from "./Dto/create-rate.dto";
 
 @Controller("assets")
 export class AssetController {
@@ -59,8 +60,16 @@ export class AssetController {
   async searchAssets(@Query("query") query: string) {
     return this.assetService.searchAssets(query);
   }
+  @Get("/rating/:id")
+  async getAverageAssetRate(@Param("id", ParseIntPipe) id: number) {
+    return this.assetService.getAverageAssetRate(id);
+  }
   @Post()
   create(@Body(ValidationPipe) createAssetDto: CreateAssetsDto) {
     return this.assetService.create(createAssetDto);
+  }
+  @Post("/rating")
+  createRate(@Body(ValidationPipe) createRateDto: CreateRateDto) {
+    return this.assetService.createRate(createRateDto);
   }
 }

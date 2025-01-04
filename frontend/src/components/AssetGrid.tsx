@@ -25,7 +25,7 @@ const AssetGrid: React.FC<AssetGridItemProps> = ({assets}) => {
                         name={asset.name}
                         img_url={asset.img_url}
                         author={asset.users?.nickname || "Unknown"}
-                        rate={asset.rate}
+                        rate={asset.rate || 0}
                         price={asset.price}
                     />
                 ))}

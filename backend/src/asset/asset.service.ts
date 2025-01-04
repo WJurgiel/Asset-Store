@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { DatabaseService } from "../database/database.service";
 import { CreateAssetsDto } from "./Dto/create-asset.dto";
+import { CreateRateDto } from "./Dto/create-rate.dto";
 
 @Injectable()
 export class AssetService {
@@ -72,6 +73,25 @@ export class AssetService {
         description: createAssetDto.description,
         type: createAssetDto.types,
         price: createAssetDto.price,
+      },
+    });
+  }
+  createRate(createRateDto: CreateRateDto) {
+    return this.database.rates.create({
+      data: {
+        id_user: createRateDto.id_user,
+        id_asset: createRateDto.id_asset,
+        rate: createRateDto.rate,
+      },
+    });
+  }
+  getAverageAssetRate(id: number) {
+    return this.database.rates.aggregate({
+      where: {
+        id_asset: id,
+      },
+      _avg: {
+        rate: true,
       },
     });
   }
