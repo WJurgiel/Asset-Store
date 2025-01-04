@@ -1,10 +1,11 @@
 export type AssetGridItemProps = {
-    assets: Array<{
-        ID: number;
-        name: string;
-        img_url: string;
-        author: string;
-        rate: number;
-        price: number;
-    }>
+    ID: number;
+    name: string;
+    img_url: string;
+    author: string;
+    description: string;
+    rate: number;
+    price: number;
+    upload_date: string;
+
 };

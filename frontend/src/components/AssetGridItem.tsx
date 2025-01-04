@@ -3,10 +3,12 @@ import {AssetGridItemProps} from "../types/AssetGriditemProps.ts";
 import {Rating} from "@mantine/core";
 import {IconHeart, IconShoppingCartPlus} from "@tabler/icons-react";
 import styles from './AssetGridItem.module.css'
+import {useNavigate} from "react-router-dom";
 
-export const AssetGridItem: React.FC<AssetGridItemProps> = ({name, img_url, author, rate, price}) => {
+export const AssetGridItem: React.FC<AssetGridItemProps> = ({ID, name, img_url, author, rate, price}) => {
+    const navigate = useNavigate();
     return (
-        <div className={styles.card}>
+        <div className={styles.card} onClick={() => navigate(`/product/${ID}`)}>
             <div
                 style={{
                     width: '100%',
