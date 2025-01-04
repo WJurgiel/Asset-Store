@@ -3,10 +3,12 @@ import styles from "./CategoryPage.module.css"
 import AssetGrid from "../../components/AssetGrid.tsx";
 import {useFetchAssets} from "../../hooks/useFetchAssets.ts";
 import {NativeSelect, Pagination} from "@mantine/core";
+import {useState} from "react";
 
 export const CategoryPage = () => {
     const {id} = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
+    const [sortOption, setSortOption] = useState("alphabetical");
     const page = parseInt(searchParams.get("page") || '1', 10);
     const limit = 6;
     const {
@@ -14,7 +16,7 @@ export const CategoryPage = () => {
         totalCount,
         loading,
         error
-    } = useFetchAssets(`http://localhost:3000/api/assets/category/${id}?page=${page}&limit=${limit}`);
+    } = useFetchAssets(`http://localhost:3000/api/assets/category/${id}?page=${page}&limit=${limit}&sort=${sortOption}`);
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
     return (
@@ -23,7 +25,10 @@ export const CategoryPage = () => {
             <div style={{display: "flex", justifyContent: "center"}}>
                 <NativeSelect style={{width: "10%"}}
                               radius="md" label="Sort by:"
+                              value={sortOption}
+                              onChange={(event) => setSortOption(event.target.value)}
                               data={[
+                                  {value: "alphabetical", label: "Alphabetical (a - z)"},
                                   {value: "priceAsc", label: 'Price (lowest to highest)'},
                                   {value: 'priceDesc', label: 'Price (highest to lowest)'},
                                   {value: 'ratingBest', label: 'Rating (best)'},
