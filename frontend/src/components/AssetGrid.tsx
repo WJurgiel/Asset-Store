@@ -21,6 +21,7 @@ const AssetGrid: React.FC<AssetGridItemProps> = ({assets}) => {
                 {assets.map((asset) => (
                     <AssetGridItem
                         key={asset.ID}
+                        ID={asset.ID}
                         name={asset.name}
                         img_url={asset.img_url}
                         author={asset.users?.nickname || "Unknown"}
