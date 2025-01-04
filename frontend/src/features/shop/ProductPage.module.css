@@ -30,7 +30,6 @@ h2{
 .imagePlaceholder{
     display: flex;
     height: 60%;
-    /*background-color: #7b7bc5;*/
     background-color: #959595;
     margin: 20px;
     border-radius: 10px;

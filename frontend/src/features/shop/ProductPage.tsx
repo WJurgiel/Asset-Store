@@ -1,50 +1,19 @@
-import styles from './ProductPage.module.css'
-import {ActionIcon, Button, Rating} from "@mantine/core";
-import {IconHeart} from "@tabler/icons-react";
+import {useFetchSingleAsset} from "../../hooks/useFetchSingleAsset.ts";
+import {useParams} from "react-router-dom";
+import {Loader} from "@mantine/core";
+import Product from "../../components/Product.tsx";
 
 export const ProductPage = () => {
+    const {id} = useParams();
+    const {
+        asset,
+        loading,
+        error
+    } = useFetchSingleAsset(`http://localhost:3000/api/assets/product/${id}`);
+    if (loading) return <Loader color="blue"/>;
+    if (error) return <p>Error: {error}</p>;
     return (
-        <div className={styles.bg}>
-            <div className={styles.card}>
-                <div className={styles.cardProductLeft}>
-                    <div className={styles.imagePlaceholder}>
-                        <img
-                            src="https://res.cloudinary.com/dzk2ijwpn/image/upload/v1735024841/samples/animals/cat.jpg"/>
-                    </div>
-                    <div className={styles.descriptionPlaceholder}>
-                        <h2>Description:</h2>
-                        <div style={{overflowWrap: "break-word", whiteSpace: "normal", width: "55vw"}}>
-                            ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffasasasasasasasasasassssssssssssssssssssssssssssasasasf
-                        </div>
-                    </div>
-                </div>
-                <div className={styles.cardProductRight}>
-                    <h1>Product</h1>
-                    <div style={{display: "flex", flexDirection: "row"}}>
-                        <h2>by:</h2>
-                        <h2>author</h2>
-
-                    </div>
-                    <div style={{display: "flex", flexDirection: "row"}}>
-                        <Rating defaultValue={2} size="xl" readOnly/>
-                        <IconHeart style={{height: "5vh", width: "5vh"}} stroke={1.5}/>
-                        <h3 style={{
-                            height: "5vh",
-                            width: "5vh",
-                            marginTop: "0px",
-                            marginLeft: "5px",
-                            fontSize: "1.5rem"
-                        }}>9999999</h3>
-                    </div>
-                    <h2>3€</h2>
-                    <div style={{display: "flex"}}>
-                        <Button fullWidth>Add to cart</Button>
-                        <ActionIcon variant="filled" size='lg' aria-label="Settings">
-                            <IconHeart style={{width: '70%', height: '70%'}} stroke={1.5}/>
-                        </ActionIcon>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Product name={asset.name} author={asset.users?.nickname} img_url={asset.img_url}
+                 description={asset.description} upload_date={asset.upload_date} price={asset.price}></Product>
     )
 }
