@@ -3,6 +3,7 @@ import axios from 'axios';
 
 export const useFetchAssets = (endpoint: string) => {
     const [assets, setAssets] = useState([]);
+    const [totalCount, setTotalCount] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -13,7 +14,8 @@ export const useFetchAssets = (endpoint: string) => {
         axios
             .get(endpoint)
             .then((response) => {
-                setAssets(response.data);
+                setAssets(response.data.assets);
+                setTotalCount(response.data.totalCount);
             })
             .catch((err) => {
                 setError(err.message || 'Something went wrong');
@@ -23,5 +25,5 @@ export const useFetchAssets = (endpoint: string) => {
             });
     }, [endpoint]);
 
-    return {assets, loading, error};
+    return {assets, totalCount, loading, error};
 };
