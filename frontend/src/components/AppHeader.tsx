@@ -1,7 +1,8 @@
 import {useNavigate} from "react-router-dom";
 import styles from "./AppHeader.module.css"
-import {ActionIcon, Autocomplete, Button, Menu, rem} from "@mantine/core";
+import {ActionIcon, Button, Menu, rem} from "@mantine/core";
 import {IconUser, IconLogout2, IconShoppingCart, IconSearch} from '@tabler/icons-react'
+import {SearchBar} from "./SearchBar.tsx";
 
 export const AppHeader = () => {
     const navigate = useNavigate();
@@ -20,29 +21,15 @@ export const AppHeader = () => {
                         maxWidth: '400px',
                     }}
                 >
-                    <Autocomplete
-                        placeholder="Search..."
-                        data={[]}
-                        styles={{
-                            input: {
-                                backgroundColor: '#914A74',
-                                color: '#fff',
-                                paddingRight: rem(40),
-                            },
-                        }}
-                        style={{flex: 1}}
-                    />
-                    <ActionIcon
-                        variant="filled"
-                        aria-label="Search"
-                        style={{
-                            position: 'absolute',
-                            right: rem(8),
-                            backgroundColor: '#914A74',
-                        }}
-                    >
-                        <IconSearch stroke={1.5}/>
-                    </ActionIcon>
+                    <SearchBar/>
+                    <IconSearch style={{
+                        position: 'absolute',
+                        right: rem(8),
+                        backgroundColor: '#914A74',
+                        opacity: "0.8",
+                        cursor: "auto"
+                    }} stroke={1.5}/>
+
                 </div>
 
                 <div
