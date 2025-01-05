@@ -14,6 +14,8 @@ export const ProductPage = () => {
     if (error) return <p>Error: {error}</p>;
     return (
         <Product name={asset.name} author={asset.users?.nickname} img_url={asset.img_url}
-                 description={asset.description} upload_date={asset.upload_date} price={asset.price}></Product>
+                 description={asset.description} averageRate={asset.averageRate} totalFavorites={asset.totalFavorites}
+                 upload_date={asset.upload_date}
+                 price={asset.price}></Product>
     )
 }

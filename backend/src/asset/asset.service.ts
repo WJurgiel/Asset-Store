@@ -7,28 +7,70 @@ import { CreateRateDto } from "./Dto/create-rate.dto";
 export class AssetService {
   constructor(private readonly database: DatabaseService) {}
   findNewest() {
-    return this.database.assets.findMany({
-      include: {
-        users: true,
-      },
-      orderBy: {
-        upload_date: "asc",
-      },
-      take: 5,
-    });
+    return this.database.assets
+      .findMany({
+        include: {
+          users: true,
+          rates_rates_id_assetToassets: {
+            select: {
+              rate: true,
+            },
+          },
+        },
+        orderBy: {
+          upload_date: "asc",
+        },
+        take: 5,
+      })
+      .then((assets) =>
+        assets.map((asset) => {
+          // Calculate average rate
+          const rates = asset.rates_rates_id_assetToassets;
+          const averageRate =
+            rates.length > 0
+              ? rates.reduce((sum, rate) => sum + rate.rate, 0) / rates.length
+              : null;
+
+          return {
+            ...asset,
+            averageRate,
+          };
+        }),
+      );
   }
   async findCategory(id: number, skip: number, limit: number, sort: any) {
-    return this.database.assets.findMany({
-      orderBy: sort,
-      include: {
-        users: true,
-      },
-      where: {
-        type: id === 1 ? "twoD" : id === 2 ? "threeD" : "SFX",
-      },
-      skip,
-      take: limit,
-    });
+    return this.database.assets
+      .findMany({
+        orderBy: sort,
+        include: {
+          users: true,
+          rates_rates_id_assetToassets: {
+            select: {
+              rate: true,
+            },
+          },
+        },
+        where: {
+          type: id === 1 ? "twoD" : id === 2 ? "threeD" : "SFX",
+        },
+        skip,
+        take: limit,
+      })
+      .then((assets) =>
+        assets.map((asset) => {
+          // Calculate average rate
+          const rates = asset.rates_rates_id_assetToassets;
+          const averageRate =
+            rates.length > 0
+              ? rates.reduce((sum, rate) => sum + rate.rate, 0) / rates.length
+              : null;
+
+          return {
+            ...asset,
+            averageRate,
+          };
+        }),
+      );
   }
   async countAssetsByCategory(id: number) {
     return this.database.assets.count({
@@ -38,18 +80,45 @@ export class AssetService {
     });
   }
   async findOne(id: number) {
-    return this.database.assets.findUnique({
-      include: {
-        users: {
-          select: {
-            nickname: true,
+    return this.database.assets
+      .findUnique({
+        where: {
+          ID: id,
+        },
+        include: {
+          users: {
+            select: {
+              nickname: true,
+            },
+          },
+          rates_rates_id_assetToassets: {
+            select: {
+              rate: true,
+            },
+          },
+          favorites: {
+            select: {
+              ID: true,
+            },
           },
         },
-      },
-      where: {
-        ID: id,
-      },
-    });
+      })
+      .then((asset) => {
+        if (!asset) {
+          return null;
+        }
+        const rates = asset.rates_rates_id_assetToassets;
+        const averageRate =
+          rates.length > 0
+            ? rates.reduce((sum, rate) => sum + rate.rate, 0) / rates.length
+            : 0;
+        const totalFavorites = asset.favorites.length;
+        return {
+          ...asset,
+          averageRate,
+          totalFavorites,
+        };
+      });
   }
   async searchAssets(query: string) {
     return this.database.assets.findMany({

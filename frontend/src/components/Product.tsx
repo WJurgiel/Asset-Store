@@ -4,7 +4,16 @@ import styles from "../features/shop/ProductPage.module.css";
 import {ActionIcon, Button, Rating} from "@mantine/core";
 import {IconHeart} from "@tabler/icons-react";
 
-const Product: React.FC<AssetGridItemProps> = ({name, author, img_url, description, upload_date, price}) => {
+const Product: React.FC<AssetGridItemProps> = ({
+                                                   name,
+                                                   author,
+                                                   img_url,
+                                                   description,
+                                                   averageRate,
+                                                   totalFavorites,
+                                                   upload_date,
+                                                   price
+                                               }) => {
     const date = new Date(upload_date);
     return (
         <div className={styles.bg}>
@@ -32,7 +41,7 @@ const Product: React.FC<AssetGridItemProps> = ({name, author, img_url, descripti
                         <a>{date.toLocaleDateString()}</a>
                     </div>
                     <div style={{display: "flex", flexDirection: "row"}}>
-                        <Rating value={2} size="xl" readOnly/>
+                        <Rating value={averageRate} fractions={2} size="xl" readOnly/>
                         <IconHeart style={{height: "5vh", width: "5vh"}} stroke={1.5}/>
                         <h3 style={{
                             height: "5vh",
@@ -40,7 +49,7 @@ const Product: React.FC<AssetGridItemProps> = ({name, author, img_url, descripti
                             marginTop: "0px",
                             marginLeft: "5px",
                             fontSize: "1.5rem"
-                        }}>9999999</h3>
+                        }}>{totalFavorites}</h3>
                     </div>
                     <h2>{`${price}€`}</h2>
                     <div style={{display: "flex"}}>
