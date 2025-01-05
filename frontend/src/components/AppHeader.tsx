@@ -26,7 +26,7 @@ export const AppHeader = () => {
                         position: 'absolute',
                         right: rem(8),
                         backgroundColor: '#914A74',
-                        opacity: "0.8",
+                        opacity: "0.3",
                         cursor: "auto"
                     }} stroke={1.5}/>
 

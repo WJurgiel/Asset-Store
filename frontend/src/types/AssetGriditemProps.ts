@@ -4,7 +4,8 @@ export type AssetGridItemProps = {
     img_url: string;
     author: string;
     description: string;
-    rate: number;
+    averageRate: number;
+    totalFavorites: number;
     price: number;
     upload_date: string;
 

@@ -5,7 +5,14 @@ import {IconHeart, IconShoppingCartPlus} from "@tabler/icons-react";
 import styles from './AssetGridItem.module.css'
 import {useNavigate} from "react-router-dom";
 
-export const AssetGridItem: React.FC<AssetGridItemProps> = ({ID, name, img_url, author, rate, price}) => {
+export const AssetGridItem: React.FC<AssetGridItemProps> = ({
+                                                                ID,
+                                                                name,
+                                                                img_url,
+                                                                author,
+                                                                averageRate,
+                                                                price
+                                                            }) => {
     const navigate = useNavigate();
     return (
         <div className={styles.card} onClick={() => navigate(`/product/${ID}`)}>
@@ -45,7 +52,7 @@ export const AssetGridItem: React.FC<AssetGridItemProps> = ({ID, name, img_url, 
                     textAlign: 'center',
                 }}
             >
-                <Rating value={rate} fractions={2} readOnly/>
+                <Rating value={averageRate} fractions={2} readOnly/>
             </div>
             <div style={{color: '#555', fontSize: '14px'}}>{`PRICE: ${price} ZL`}</div>
             {/*action buttons*/}

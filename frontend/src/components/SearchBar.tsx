@@ -28,13 +28,6 @@ export const SearchBar = () => {
                     console.log(selectedAsset.ID);
                 }
             }}
-            onSubmit={(value) => {
-                const selectedAsset = suggestions.find((asset) => asset.name === value);
-                if (selectedAsset) {
-                    navigate(`/product/${selectedAsset.ID}`);
-                    console.log(selectedAsset.ID);
-                }
-            }}
             loading={loading}
             styles={{
                 input: {
