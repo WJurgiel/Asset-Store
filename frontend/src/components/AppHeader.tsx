@@ -65,6 +65,7 @@ export const AppHeader = () => {
                             >
                                 Profile
                             </Menu.Item>
+                            
                             <Menu.Item
                                 leftSection={<IconLogout2 style={{width: rem(14), height: rem(14)}}/>}
                                 onClick={() => {
