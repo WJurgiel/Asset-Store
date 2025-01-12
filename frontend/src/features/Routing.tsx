@@ -8,6 +8,7 @@ import {ProfilePage} from "./user/ProfilePage.tsx";
 import {CheckoutPage} from "./user/CheckoutPage.tsx";
 import {ErrorPage} from "./error/ErrorPage.tsx";
 import {RegisterPage} from "./user/RegisterPage.tsx";
+import {AddAssetPage} from "./user/AddAssetPage.tsx";
 
 const routes: RouteObject[] = [
     {
@@ -45,6 +46,10 @@ const routes: RouteObject[] = [
             {
                 path: "/checkout",
                 element: <CheckoutPage></CheckoutPage>
+            },
+            {
+                path: "/add",
+                element: <AddAssetPage></AddAssetPage>
             },
             {
                 path: "*",

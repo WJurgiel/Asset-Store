@@ -1,0 +1,24 @@
+.bg{
+    height:100vh;
+    background-color:#d9d9d9;
+    display:flex;
+    flex-direction: column;
+    text-align: center;
+}
+.container{
+    display: flex;
+    background-color: #bfbfbf;
+    margin: 30px 40px;
+    height: 50vh;
+    justify-content: space-around;
+}
+.list{
+    background-color: #a8a8a8;
+    margin: 10px 10px;
+    width: 40vw;
+}
+.addButton{
+    width: 10vw;
+    align-self: center;
+    font-weight: bold;
+}

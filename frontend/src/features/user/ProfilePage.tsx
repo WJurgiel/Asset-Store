@@ -1,6 +1,10 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import styles from "./ProfilePage.module.css"
+import {Button, Loader} from "@mantine/core";
+import {IconPlus} from "@tabler/icons-react";
+import {getCookie} from "../../utils/getCookie.ts";
 
 export const ProfilePage = () => {
     const [user, setUser] = useState(null);
@@ -19,13 +23,28 @@ export const ProfilePage = () => {
     }, [navigate])
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <Loader color="blue"/>;
     }
-
+    const handleAddForm = () => {
+        if (getCookie("is-logged") === "true") {
+            navigate("/add");
+        } else {
+            navigate("*")
+        }
+    }
     return (
-        <div>
+        <div className={styles.bg}>
             <h1>Welcome, {user?.nickname}!</h1>
-            <p>Email: {user?.email}</p>
+            <Button className={styles.addButton} rightSection={<IconPlus size={14}/>} onClick={handleAddForm}>Add new
+                asset</Button>
+            <div className={styles.container}>
+                <div className={styles.list}>
+                    <a>kupione assety</a>
+                </div>
+                <div className={styles.list}>
+                    <a>twoje assety</a>
+                </div>
+            </div>
         </div>
     )
 }
