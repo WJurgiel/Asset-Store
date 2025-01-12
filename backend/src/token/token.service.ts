@@ -8,6 +8,7 @@ export class TokenService {
     return this.jwtService.sign({ sub: userId }, { expiresIn: "1h" });
   }
   verifyToken(token: string): { sub: number } {
+    console.log(token);
     return this.jwtService.verify(token);
   }
 }

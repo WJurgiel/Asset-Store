@@ -12,8 +12,6 @@ export class AuthService {
     });
 
     if (!user) return null;
-    // not working here
-    console.log(user.password, password);
     const isValid = await argon2.verify(user.password, password);
 
     if (!isValid) return null;

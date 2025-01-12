@@ -19,4 +19,11 @@ export class UserService {
       if (e.code == "P2002") throw new ConflictException("User already exists");
     }
   }
+  findOne(userId: number) {
+    return this.database.users.findUnique({
+      where: {
+        ID: userId,
+      },
+    });
+  }
 }
