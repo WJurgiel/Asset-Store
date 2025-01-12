@@ -3,9 +3,27 @@ import styles from "./AppHeader.module.css"
 import {ActionIcon, Button, Menu, rem} from "@mantine/core";
 import {IconUser, IconLogout2, IconShoppingCart, IconSearch} from '@tabler/icons-react'
 import {SearchBar} from "./SearchBar.tsx";
+import {getCookie} from "../utils/getCookie.ts";
+import {useEffect, useState} from "react";
+import {logout} from "../utils/logout.ts";
 
 export const AppHeader = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
+    useEffect(() => {
+        const checkLoginStatus = () => {
+            setIsLoggedIn(getCookie("is-logged") === "true");
+        };
+        checkLoginStatus();
+        const interval = setInterval(checkLoginStatus, 1000);
+        return () => {
+            clearInterval(interval);
+        };
+    }, [])
+    const logoutHandler = () => {
+        logout();
+        setIsLoggedIn(false);
+    }
     return (
         <div>
             <div className={styles.appHeader}>
@@ -65,15 +83,18 @@ export const AppHeader = () => {
                             >
                                 Profile
                             </Menu.Item>
-                            <Menu.Item
-                                leftSection={<IconLogout2 style={{width: rem(14), height: rem(14)}}/>}
-                                onClick={() => {
-                                    navigate('/login');
-                                    console.log('log out');
-                                }}
-                            >
-                                Logout
-                            </Menu.Item>
+                            {isLoggedIn &&
+                                <Menu.Item
+                                    leftSection={<IconLogout2 style={{width: rem(14), height: rem(14)}}/>}
+                                    onClick={() => {
+                                        navigate('/login');
+                                        logoutHandler();
+                                    }}
+                                >
+                                    Logout
+                                </Menu.Item>}
+
+
                         </Menu.Dropdown>
                     </Menu>
                 </div>

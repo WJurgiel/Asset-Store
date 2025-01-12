@@ -7,6 +7,7 @@ import {LoginPage} from "./user/LoginPage.tsx";
 import {ProfilePage} from "./user/ProfilePage.tsx";
 import {CheckoutPage} from "./user/CheckoutPage.tsx";
 import {ErrorPage} from "./error/ErrorPage.tsx";
+import {RegisterPage} from "./user/RegisterPage.tsx";
 
 const routes: RouteObject[] = [
     {
@@ -32,6 +33,10 @@ const routes: RouteObject[] = [
             {
                 path: "/login",
                 element: <LoginPage></LoginPage>
+            },
+            {
+                path: "/register",
+                element: <RegisterPage></RegisterPage>
             },
             {
                 path: "/profile",
