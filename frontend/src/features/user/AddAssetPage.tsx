@@ -6,19 +6,50 @@ import {IconCube, IconPhoto} from "@tabler/icons-react";
 
 export const AddAssetPage = () => {
     const [filePhoto, setfilePhoto] = useState<File | null>(null);
-    const [file, setFile] = useState<File | null>(null);
-
+    const [userID, setUserID] = useState<string | null>(null);
+    const [assetName, setAssetName] = useState<string | null>(null);
+    const [assetDescription, setAssetDescription] = useState<string | null>(null);
+    const [assetType, setAssetType] = useState<string | null>(null);
+    const [assetPrice, setAssetPrice] = useState<string | null>(null);
     const navigate = useNavigate();
     useEffect(() => {
         axios.get('http://localhost:3000/api/user/me', {withCredentials: true})
             .then(response => {
                 console.log(response)
+                const userID = response.data.ID;
+                setUserID(userID.toString());
             })
             .catch(error => {
                 console.log(error);
                 navigate("/login")
             });
     }, [navigate])
+
+    const handleUpload = async () => {
+        if (!filePhoto || !userID) {
+            alert("Please upload file");
+        }
+        const formData = new FormData();
+        formData.append('file', filePhoto as File);
+        formData.append('userID', userID as string);
+        formData.append('name', assetName as string);
+
+        try {
+            const response = await axios.post("http://localhost:3000/api/assets/upload",
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    },
+                    withCredentials: true,
+                });
+            console.log("upload successful: ", response.data);
+            navigate("/home");
+        } catch (error) {
+            console.error("Upload failed:", error);
+        }
+    }
+
     return (
         <div>
             <h1>Create asset</h1>
@@ -42,19 +73,19 @@ export const AddAssetPage = () => {
                     </Group>
                 </Radio.Group>
                 <Group justify="left">
-                    <FileButton onChange={setfilePhoto} accept="image/png,image/jpeg">
+                    <FileButton onChange={setfilePhoto} accept="image/png">
                         {(props) => <Button {...props} rightSection={<IconPhoto size={14}/>}>Upload image</Button>}
                     </FileButton>
-                    <FileButton onChange={setFile} accept="image/png,image/jpeg">
-                        {(props) => <Button {...props} rightSection={<IconCube size={14}/>}>Upload asset file</Button>}
-                    </FileButton>
+                    {/*<FileButton onChange={setFile} accept="image/png,image/jpeg">*/}
+                    {/*    {(props) => <Button {...props} rightSection={<IconCube size={14}/>}>Upload asset file</Button>}*/}
+                    {/*</FileButton>*/}
                 </Group>
                 {filePhoto && (
                     <Text size="sm" ta="center" mt="sm">
                         Picked file: {filePhoto.name}
                     </Text>
                 )}
-                <Button>Add asset!</Button>
+                <Button onClick={handleUpload}>Add asset!</Button>
             </Fieldset>
 
         </div>

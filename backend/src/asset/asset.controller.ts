@@ -89,13 +89,21 @@ export class AssetController {
       }),
     )
     file: Express.Multer.File,
+    @Body() body: { userID: number },
   ) {
     const { buffer, originalname } = file;
+    const { userID } = body;
+    const filePath = `${userID}/${originalname}`;
     const uploadedObject = await this.filebaseService.uploadFile(
-      originalname,
+      filePath,
       buffer,
     );
-    return { message: "File uploaded successfully", data: uploadedObject };
+    const { cid } = uploadedObject;
+    return {
+      link: `${process.env.FILEBASE_GATEWAY}${cid}`,
+      message: "File uploaded successfully",
+      data: uploadedObject,
+    };
   }
 
   @Post("/rating")
