@@ -19,6 +19,7 @@ import { CreateAssetsDto } from "./Dto/create-asset.dto";
 import { CreateRateDto } from "./Dto/create-rate.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { FilebaseService } from "./filebase/filebase.service";
+import { assets_type } from "@prisma/client";
 @Controller("assets")
 export class AssetController {
   constructor(
@@ -89,17 +90,40 @@ export class AssetController {
       }),
     )
     file: Express.Multer.File,
-    @Body() body: { userID: number },
+    @Body()
+    body: {
+      userID: string;
+      name: string;
+      assetDescription: string;
+      assetType: string;
+      assetPrice: string;
+    },
   ) {
     const { buffer, originalname } = file;
-    const { userID } = body;
+    const { userID, name, assetDescription, assetType, assetPrice } = body;
     const filePath = `${userID}/${originalname}`;
     const uploadedObject = await this.filebaseService.uploadFile(
       filePath,
       buffer,
     );
     const { cid } = uploadedObject;
+    const link = `${process.env.FILEBASE_GATEWAY}${cid}`;
+    const type: assets_type =
+      assetType === "twoD"
+        ? assets_type.twoD
+        : assetType === "threeD"
+          ? assets_type.threeD
+          : assets_type.SFX;
+    await this.assetService.createNoDto(
+      name,
+      link,
+      Number(userID),
+      assetDescription,
+      type,
+      Number(assetPrice),
+    );
     return {
+      asset: `${name} ${assetDescription} ${assetType} ${assetPrice}`,
       link: `${process.env.FILEBASE_GATEWAY}${cid}`,
       message: "File uploaded successfully",
       data: uploadedObject,

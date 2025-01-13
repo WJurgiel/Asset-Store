@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {Button, Fieldset, FileButton, Group, Text, TextInput, Radio, Textarea} from "@mantine/core";
+import {Button, Fieldset, FileButton, Group, Text, TextInput, Radio, Textarea, NumberInput} from "@mantine/core";
 import {IconCube, IconPhoto} from "@tabler/icons-react";
 
 export const AddAssetPage = () => {
@@ -33,7 +33,9 @@ export const AddAssetPage = () => {
         formData.append('file', filePhoto as File);
         formData.append('userID', userID as string);
         formData.append('name', assetName as string);
-
+        formData.append('assetDescription', assetDescription as string);
+        formData.append('assetType', assetType as string);
+        formData.append('assetPrice', assetPrice as string);
         try {
             const response = await axios.post("http://localhost:3000/api/assets/upload",
                 formData,
@@ -54,24 +56,34 @@ export const AddAssetPage = () => {
         <div>
             <h1>Create asset</h1>
             <Fieldset legend="Asset details">
-                <TextInput label="Asset name" placeholder="asset name"/>
+                <TextInput label="Asset name" placeholder="asset name" onChange={(e) => setAssetName(e.target.value)}/>
                 <Textarea
                     placeholder="description"
                     label="Asset description"
                     autosize
                     minRows={2}
+                    onChange={(e) => setAssetDescription(e.target.value)}
                 />
                 <Radio.Group
                     name="favoriteFramework"
                     label="Asset type"
                     withAsterisk
+
                 >
                     <Group mt="xs">
-                        <Radio value="2d" label="2D"/>
-                        <Radio value="3d" label="3D"/>
-                        <Radio value="sfx" label="SFX"/>
+                        <Radio value="2d" label="2D" onChange={() => setAssetType("twoD")}/>
+                        <Radio value="3d" label="3D" onChange={() => setAssetType("threeD")}/>
+                        <Radio value="sfx" label="SFX" onChange={() => setAssetType("SFX")}/>
                     </Group>
                 </Radio.Group>
+                <NumberInput
+                    label="With prefix"
+                    placeholder="Price"
+                    prefix="€"
+                    defaultValue={0}
+                    mb="md"
+                    onChange={(e) => setAssetPrice("10")}
+                />
                 <Group justify="left">
                     <FileButton onChange={setfilePhoto} accept="image/png">
                         {(props) => <Button {...props} rightSection={<IconPhoto size={14}/>}>Upload image</Button>}
