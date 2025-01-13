@@ -145,6 +145,7 @@ export class AssetService {
       },
     });
   }
+
   createRate(createRateDto: CreateRateDto) {
     return this.database.rates.create({
       data: {
