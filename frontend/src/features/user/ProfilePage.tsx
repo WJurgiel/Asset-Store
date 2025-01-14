@@ -5,6 +5,9 @@ import styles from "./ProfilePage.module.css"
 import {Button, Loader, Tabs} from "@mantine/core";
 import {IconHeart, IconPlus, IconShoppingCartCheck, IconUpload} from "@tabler/icons-react";
 import {getCookie} from "../../utils/getCookie.ts";
+import {useFetchAssets} from "../../hooks/useFetchAssets.ts";
+import {AssetListItem} from "../../components/AssetListItem.tsx";
+import {ListTabEnum} from "../../types/ListTabEnum.ts";
 
 export const ProfilePage = () => {
     const [user, setUser] = useState(null);
@@ -21,6 +24,10 @@ export const ProfilePage = () => {
                 navigate("/login")
             });
     }, [navigate])
+    const {
+        assets,
+        error
+    } = useFetchAssets("http://localhost:3000/api/assets")
 
     if (loading) {
         return <Loader color="blue"/>;
@@ -35,7 +42,7 @@ export const ProfilePage = () => {
     return (
         <div className={styles.bg}>
             <h1>Welcome, {user?.nickname}!</h1>
-            <Button className={styles.addButton} rightSection={<IconPlus size={14}/>} onClick={handleAddForm}>Add new
+            <Button className={styles.addButton} rightSection={<IconPlus size={14}/>} onClick={handleAddForm}>Upload new
                 asset</Button>
             <div className={styles.container}>
                 <Tabs defaultValue="bought">
@@ -50,18 +57,29 @@ export const ProfilePage = () => {
                             Uploaded assets
                         </Tabs.Tab>
                     </Tabs.List>
+                    <div className={styles.panel}>
+                        <Tabs.Panel value="bought">
+                            {assets.map((asset) => (
+                                <AssetListItem
+                                    key={asset.ID}
+                                    ID={asset.ID}
+                                    name={asset.name}
+                                    img_url={asset.img_url}
+                                    averageRate={asset.averageRate}
+                                    listType={ListTabEnum.uploaded}
+                                />
+                            ))}
+                        </Tabs.Panel>
 
-                    <Tabs.Panel value="bought">
-                        bought assets
-                    </Tabs.Panel>
+                        <Tabs.Panel value="favourites">
+                            favourite assets
+                        </Tabs.Panel>
 
-                    <Tabs.Panel value="favourites">
-                        favourite assets
-                    </Tabs.Panel>
+                        <Tabs.Panel value="uploaded">
+                            uploaded assets
+                        </Tabs.Panel>
+                    </div>
 
-                    <Tabs.Panel value="uploaded">
-                        uploaded assets
-                    </Tabs.Panel>
                 </Tabs>
             </div>
             {/*<div className={styles.container}>*/}
