@@ -9,7 +9,7 @@ import { UserID } from "../auth/user.decorator";
 @Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  @Post()
+  @Post("/create")
   async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.userService.create(createUserDto);
     return plainToInstance(UserDto, user);

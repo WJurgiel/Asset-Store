@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { DatabaseService } from "../database/database.service";
 import { CreateAssetsDto } from "./Dto/create-asset.dto";
 import { CreateRateDto } from "./Dto/create-rate.dto";
+import { assets_type } from "@prisma/client";
 
 @Injectable()
 export class AssetService {
@@ -142,6 +143,32 @@ export class AssetService {
         description: createAssetDto.description,
         type: createAssetDto.types,
         price: createAssetDto.price,
+      },
+    });
+  }
+  async createNoDto(
+    name: string,
+    img_url: string,
+    id_author: number,
+    description: string,
+    type: assets_type,
+    price: number,
+  ) {
+    return this.database.assets.create({
+      data: {
+        name: name,
+        img_url: img_url,
+        id_author: id_author,
+        description: description,
+        type: type,
+        price: price,
+      },
+    });
+  }
+  async countAssetsByUser(author_id: number) {
+    return this.database.assets.count({
+      where: {
+        id_author: author_id,
       },
     });
   }

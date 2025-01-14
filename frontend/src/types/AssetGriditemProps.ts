@@ -8,5 +8,4 @@ export type AssetGridItemProps = {
     totalFavorites: number;
     price: number;
     upload_date: string;
-
 };

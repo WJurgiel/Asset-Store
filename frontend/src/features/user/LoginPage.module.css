@@ -6,7 +6,8 @@
     align-items: center;
 }
 .loginForm{
-    background-color: #e4b1b1;
+    background-color: #e8e8e8;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     height: 38vh;
     width: 30vw;
     display: flex;
@@ -14,7 +15,8 @@
     border-radius: 10px;
 }
 .registerForm{
-    background-color: #e4b1b1;
+    background-color: #e8e8e8;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     height: 40vh;
     width: 30vw;
     display: flex;
