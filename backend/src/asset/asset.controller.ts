@@ -101,7 +101,10 @@ export class AssetController {
   ) {
     const { buffer, originalname } = file;
     const { userID, name, assetDescription, assetType, assetPrice } = body;
-    const filePath = `${userID}/${originalname}`;
+    const assetsFromUser = await this.assetService.countAssetsByUser(
+      Number(userID),
+    );
+    const filePath = `${userID}/${assetsFromUser}/${originalname}`;
     const uploadedObject = await this.filebaseService.uploadFile(
       filePath,
       buffer,

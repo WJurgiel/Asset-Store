@@ -165,6 +165,13 @@ export class AssetService {
       },
     });
   }
+  async countAssetsByUser(author_id: number) {
+    return this.database.assets.count({
+      where: {
+        id_author: author_id,
+      },
+    });
+  }
   createRate(createRateDto: CreateRateDto) {
     return this.database.rates.create({
       data: {

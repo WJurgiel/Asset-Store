@@ -6,11 +6,10 @@
     text-align: center;
 }
 .container{
-    display: flex;
-    background-color: #bfbfbf;
+    background-color: #e8e8e8;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     margin: 30px 40px;
     height: 50vh;
-    justify-content: space-around;
 }
 .list{
     background-color: #a8a8a8;
