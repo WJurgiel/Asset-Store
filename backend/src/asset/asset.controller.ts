@@ -106,6 +106,10 @@ export class AssetController {
       );
     }
   }
+  @Get("/favourite")
+  getMyFavourites(@Query("userID", ParseIntPipe) id: number) {
+    return this.assetService.getMyFavourites(id);
+  }
   @Post()
   create(@Body(ValidationPipe) createAssetDto: CreateAssetsDto) {
     return this.assetService.create(createAssetDto);

@@ -255,6 +255,13 @@ export class AssetService {
       },
     });
   }
+  async getMyFavourites(userID: number) {
+    return this.database.favorites.findMany({
+      where: {
+        id_user: userID,
+      },
+    });
+  }
   async findFavourite(userID: number, assetID: number) {
     return this.database.favorites.findFirst({
       where: {

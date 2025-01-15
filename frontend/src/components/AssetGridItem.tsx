@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {AssetGridItemProps} from "../types/AssetGriditemProps.ts";
 import {Rating} from "@mantine/core";
 import {IconHeart, IconHeartFilled, IconShoppingCartPlus} from "@tabler/icons-react";
@@ -6,6 +6,7 @@ import styles from './AssetGridItem.module.css'
 import {useNavigate} from "react-router-dom";
 import {toggleFavourites} from "../utils/toggleFavourites.ts";
 import {whoami} from "../utils/whoami.ts";
+import {getMyFavourites} from "../utils/getMyFavourites.ts";
 
 export const AssetGridItem: React.FC<AssetGridItemProps> = ({
                                                                 ID,
@@ -16,15 +17,38 @@ export const AssetGridItem: React.FC<AssetGridItemProps> = ({
                                                                 price
                                                             }) => {
     const [isAssetFavourite, setIsAssetFavourite] = useState(false);
+    const [userID, setUserID] = useState<number | null>(null);
+    const [myFavourites, setMyFavourites] = useState<number[] | null>(null);
     const navigate = useNavigate();
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const usrId = await whoami(); // Pobieramy userID
+                setUserID(usrId); // Ustawiamy userID
+
+                const fav = await getMyFavourites(usrId);
+                setMyFavourites(fav);
+
+                if (fav.includes(ID)) {
+                    setIsAssetFavourite(true);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchData();
+        console.log(myFavourites)
+
+    }, []);
     const handleFavourites = async () => {
-        const userID = await whoami();
         if (userID === null) {
             console.error("Failed to retrieve user ID");
             return;
         }
         console.log("User ID:", userID);
-
+        const myFavourites = await getMyFavourites(userID);
+        console.log(myFavourites);
         setIsAssetFavourite(!isAssetFavourite);
         return toggleFavourites(userID, ID);
     }
