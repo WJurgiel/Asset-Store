@@ -8,6 +8,7 @@ import {getCookie} from "../../utils/getCookie.ts";
 import {useFetchAssets} from "../../hooks/useFetchAssets.ts";
 import {AssetListItem} from "../../components/AssetListItem.tsx";
 import {ListTabEnum} from "../../types/ListTabEnum.ts";
+import {useFetchProfileAssets} from "../../hooks/useFetchProfileAssets.ts";
 
 export const ProfilePage = () => {
     const [user, setUser] = useState(null);
@@ -25,13 +26,16 @@ export const ProfilePage = () => {
             });
     }, [navigate])
     const {
-        assets,
+        boughtAssets,
+        uploadedAssets,
+        favouriteAssets,
         error
-    } = useFetchAssets("http://localhost:3000/api/assets")
+    } = useFetchProfileAssets(`http://localhost:3000/api/assets/profile/20`)
 
     if (loading) {
         return <Loader color="blue"/>;
     }
+    // if (error) return <p>Error: {error}</p>;
     const handleAddForm = () => {
         if (getCookie("is-logged") === "true") {
             navigate("/add");
@@ -59,7 +63,33 @@ export const ProfilePage = () => {
                     </Tabs.List>
                     <div className={styles.panel}>
                         <Tabs.Panel value="bought">
-                            {assets.map((asset) => (
+                            {boughtAssets.map((asset) => (
+                                <AssetListItem
+                                    key={asset.ID}
+                                    ID={asset.ID}
+                                    name={asset.name}
+                                    img_url={asset.img_url}
+                                    averageRate={asset.averageRate}
+                                    listType={ListTabEnum.bought}
+                                />
+                            ))}
+                        </Tabs.Panel>
+
+                        <Tabs.Panel value="favourites">
+                            {favouriteAssets.map((asset) => (
+                                <AssetListItem
+                                    key={asset.ID}
+                                    ID={asset.ID}
+                                    name={asset.name}
+                                    img_url={asset.img_url}
+                                    averageRate={asset.averageRate}
+                                    listType={ListTabEnum.favourite}
+                                />
+                            ))}
+                        </Tabs.Panel>
+
+                        <Tabs.Panel value="uploaded">
+                            {uploadedAssets.map((asset) => (
                                 <AssetListItem
                                     key={asset.ID}
                                     ID={asset.ID}
@@ -70,26 +100,10 @@ export const ProfilePage = () => {
                                 />
                             ))}
                         </Tabs.Panel>
-
-                        <Tabs.Panel value="favourites">
-                            favourite assets
-                        </Tabs.Panel>
-
-                        <Tabs.Panel value="uploaded">
-                            uploaded assets
-                        </Tabs.Panel>
                     </div>
 
                 </Tabs>
             </div>
-            {/*<div className={styles.container}>*/}
-            {/*    <div className={styles.list}>*/}
-            {/*        <a>kupione assety</a>*/}
-            {/*    </div>*/}
-            {/*    <div className={styles.list}>*/}
-            {/*        <a>twoje assety</a>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
         </div>
     )
 }

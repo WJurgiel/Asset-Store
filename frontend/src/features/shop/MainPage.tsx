@@ -71,7 +71,11 @@ export const MainPage = () => {
             </div>
             {/*Recent uploads page*/}
             <div style={{fontSize: "25px", textAlign: "center", marginBottom: "5px"}}>Latest assets:</div>
-            <AssetGrid assets={assets}/>
+            <div style={{display: "flex", justifyContent: "center", alignContent: "center"}}>
+                <AssetGrid
+                    assets={assets}/>
+            </div>
+
         </>
     )
 }

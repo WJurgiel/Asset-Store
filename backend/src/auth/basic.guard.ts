@@ -23,7 +23,6 @@ export class BasicGuard implements CanActivate {
     if (!email || !password) return false;
 
     const user = await this.authService.verifyUser(email, password);
-    console.log(user);
     if (!user) return false;
     request.userId = user.ID;
     return true;

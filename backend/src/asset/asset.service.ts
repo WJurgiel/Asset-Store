@@ -7,6 +7,7 @@ import { assets_type } from "@prisma/client";
 @Injectable()
 export class AssetService {
   constructor(private readonly database: DatabaseService) {}
+
   findNewest() {
     return this.database.assets
       .findMany({
@@ -19,9 +20,9 @@ export class AssetService {
           },
         },
         orderBy: {
-          upload_date: "asc",
+          upload_date: "desc",
         },
-        take: 5,
+        take: 6,
       })
       .then((assets) =>
         assets.map((asset) => {
@@ -39,6 +40,7 @@ export class AssetService {
         }),
       );
   }
+
   async findCategory(id: number, skip: number, limit: number, sort: any) {
     return this.database.assets
       .findMany({
@@ -73,6 +75,7 @@ export class AssetService {
         }),
       );
   }
+
   async countAssetsByCategory(id: number) {
     return this.database.assets.count({
       where: {
@@ -80,6 +83,7 @@ export class AssetService {
       },
     });
   }
+
   async findOne(id: number) {
     return this.database.assets
       .findUnique({
@@ -121,6 +125,7 @@ export class AssetService {
         };
       });
   }
+
   async searchAssets(query: string) {
     return this.database.assets.findMany({
       where: {
@@ -134,6 +139,41 @@ export class AssetService {
       },
     });
   }
+
+  async userAssets(userID: number) {
+    const bought = await this.database.transactions.findMany({
+      where: {
+        id_user: userID,
+        type: "bought",
+      },
+      include: {
+        assets: true,
+      },
+    });
+    const uploaded = await this.database.transactions.findMany({
+      where: {
+        id_user: userID,
+        type: "uploaded",
+      },
+      include: {
+        assets: true,
+      },
+    });
+    const favourites = await this.database.favorites.findMany({
+      where: {
+        id_user: userID,
+      },
+      include: {
+        assets: true,
+      },
+    });
+    return {
+      boughtAssets: bought.map((tr) => tr.assets),
+      uploadedAssets: uploaded.map((up) => up.assets),
+      favouriteAssets: favourites.map((fav) => fav.assets),
+    };
+  }
+
   create(createAssetDto: CreateAssetsDto) {
     return this.database.assets.create({
       data: {
@@ -146,6 +186,7 @@ export class AssetService {
       },
     });
   }
+
   async createNoDto(
     name: string,
     img_url: string,
@@ -165,6 +206,7 @@ export class AssetService {
       },
     });
   }
+
   async countAssetsByUser(author_id: number) {
     return this.database.assets.count({
       where: {
@@ -172,6 +214,7 @@ export class AssetService {
       },
     });
   }
+
   createRate(createRateDto: CreateRateDto) {
     return this.database.rates.create({
       data: {
@@ -181,6 +224,7 @@ export class AssetService {
       },
     });
   }
+
   getAverageAssetRate(id: number) {
     return this.database.rates.aggregate({
       where: {
@@ -190,5 +234,52 @@ export class AssetService {
         rate: true,
       },
     });
+  }
+
+  giveRating(userID: number, assetID: number, rate: number) {
+    return this.database.rates.create({
+      data: {
+        id_user: userID,
+        id_asset: assetID,
+        rate: rate,
+      },
+    });
+  }
+  async getLinkToAsset(assetID: number) {
+    return this.database.assets.findFirst({
+      where: {
+        ID: assetID,
+      },
+      select: {
+        img_url: true,
+      },
+    });
+  }
+  async findFavourite(userID: number, assetID: number) {
+    return this.database.favorites.findFirst({
+      where: {
+        id_asset: assetID,
+        id_user: userID,
+      },
+      select: {
+        ID: true,
+      },
+    });
+  }
+  async removeFavourites(ID: number) {
+    return this.database.favorites.delete({
+      where: {
+        ID: ID,
+      },
+    });
+  }
+  async addToFavourites(userID: number, assetID: number) {
+    await this.database.favorites.create({
+      data: {
+        id_user: userID,
+        id_asset: assetID,
+      },
+    });
+    console.log("added");
   }
 }

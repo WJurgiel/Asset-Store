@@ -1,9 +1,11 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {AssetGridItemProps} from "../types/AssetGriditemProps.ts";
 import {Rating} from "@mantine/core";
-import {IconHeart, IconShoppingCartPlus} from "@tabler/icons-react";
+import {IconHeart, IconHeartFilled, IconShoppingCartPlus} from "@tabler/icons-react";
 import styles from './AssetGridItem.module.css'
 import {useNavigate} from "react-router-dom";
+import {toggleFavourites} from "../utils/toggleFavourites.ts";
+import {whoami} from "../utils/whoami.ts";
 
 export const AssetGridItem: React.FC<AssetGridItemProps> = ({
                                                                 ID,
@@ -13,9 +15,21 @@ export const AssetGridItem: React.FC<AssetGridItemProps> = ({
                                                                 averageRate,
                                                                 price
                                                             }) => {
+    const [isAssetFavourite, setIsAssetFavourite] = useState(false);
     const navigate = useNavigate();
+    const handleFavourites = async () => {
+        const userID = await whoami();
+        if (userID === null) {
+            console.error("Failed to retrieve user ID");
+            return;
+        }
+        console.log("User ID:", userID);
+
+        setIsAssetFavourite(!isAssetFavourite);
+        return toggleFavourites(userID, ID);
+    }
     return (
-        <div className={styles.card} onClick={() => navigate(`/product/${ID}`)}>
+        <div className={styles.card}>
             <div
                 style={{
                     width: '100%',
@@ -27,14 +41,14 @@ export const AssetGridItem: React.FC<AssetGridItemProps> = ({
                     border: '1px solid #ddd',
                 }}
             >
-                <img
-                    src={img_url}
-                    alt={`${name} by ${author}`}
-                    style={{
-                        maxWidth: '100%',
-                        maxHeight: '100%',
-                        objectFit: 'cover',
-                    }}
+                <img onClick={() => navigate(`/product/${ID}`)}
+                     src={img_url}
+                     alt={`${name} by ${author}`}
+                     style={{
+                         maxWidth: '100%',
+                         maxHeight: '100%',
+                         objectFit: 'cover',
+                     }}
                 />
             </div>
             <div
@@ -43,7 +57,7 @@ export const AssetGridItem: React.FC<AssetGridItemProps> = ({
                     textAlign: 'left',
                 }}
             >
-                <div className={styles.nameLabel}>{name}</div>
+                <div className={styles.nameLabel} onClick={() => navigate(`/product/${ID}`)}>{name}</div>
                 <div className={styles.authorLabel}>{author}</div>
             </div>
             <div
@@ -61,7 +75,9 @@ export const AssetGridItem: React.FC<AssetGridItemProps> = ({
                 flexDirection: 'row',
                 justifyContent: 'left',
             }}>
-                <IconHeart className={styles.icon}></IconHeart>
+                {!isAssetFavourite && <IconHeart onClick={handleFavourites} className={styles.icon}></IconHeart>}
+                {isAssetFavourite &&
+                    <IconHeartFilled onClick={handleFavourites} className={styles.icon}></IconHeartFilled>}
                 <IconShoppingCartPlus className={styles.icon}></IconShoppingCartPlus>
             </div>
         </div>

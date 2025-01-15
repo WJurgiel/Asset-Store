@@ -3,6 +3,8 @@ import {
   Controller,
   FileTypeValidator,
   Get,
+  HttpException,
+  HttpStatus,
   MaxFileSizeValidator,
   NotFoundException,
   Param,
@@ -10,6 +12,7 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  Res,
   UploadedFile,
   UseInterceptors,
   ValidationPipe,
@@ -20,6 +23,7 @@ import { CreateRateDto } from "./Dto/create-rate.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { FilebaseService } from "./filebase/filebase.service";
 import { assets_type } from "@prisma/client";
+import { Response } from "express";
 @Controller("assets")
 export class AssetController {
   constructor(
@@ -66,6 +70,10 @@ export class AssetController {
   async findOne(@Param("id", ParseIntPipe) id: number) {
     return this.assetService.findOne(id);
   }
+  @Get("/profile/:id")
+  async userAssets(@Param("id", ParseIntPipe) id: number) {
+    return this.assetService.userAssets(id);
+  }
   @Get("/search")
   async searchAssets(@Query("query") query: string) {
     return this.assetService.searchAssets(query);
@@ -73,6 +81,30 @@ export class AssetController {
   @Get("/rating/:id")
   async getAverageAssetRate(@Param("id", ParseIntPipe) id: number) {
     return this.assetService.getAverageAssetRate(id);
+  }
+  @Get("/download/:id")
+  async downloadAsset(
+    @Param("id", ParseIntPipe) id: number,
+    @Res() res: Response,
+  ) {
+    const { img_url } = await this.assetService.getLinkToAsset(id);
+    if (!img_url) {
+      throw new HttpException("Key not Found", HttpStatus.NOT_FOUND);
+    }
+    try {
+      const fileStream =
+        await this.filebaseService.downloadAssetMockUp(img_url);
+      res.set({
+        "Content-Type": "application/octet-stream",
+        "Content-Disposition": `attachment; filename="${img_url}"`,
+      });
+      fileStream.pipe(res);
+    } catch (error) {
+      throw new HttpException(
+        `Failed to download file: ${error.message}`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
   }
   @Post()
   create(@Body(ValidationPipe) createAssetDto: CreateAssetsDto) {
@@ -136,5 +168,33 @@ export class AssetController {
   @Post("/rating")
   createRate(@Body(ValidationPipe) createRateDto: CreateRateDto) {
     return this.assetService.createRate(createRateDto);
+  }
+  @Post("/favourite")
+  async toggleFavourites(
+    @Query("userID", ParseIntPipe) userID: number,
+    @Query("assetID", ParseIntPipe) assetID: number,
+  ) {
+    try {
+      const favouriteEntry = await this.assetService.findFavourite(
+        userID,
+        assetID,
+      );
+      if (favouriteEntry) {
+        const { ID } = favouriteEntry;
+        await this.assetService.removeFavourites(ID);
+        return {
+          message: `favourite removed for userID=${userID} && assetID=${assetID}`,
+        };
+      }
+      await this.assetService.addToFavourites(userID, assetID);
+      return {
+        message: `favourite added for userID=${userID} && assetID=${assetID}`,
+      };
+    } catch (error) {
+      throw new HttpException(
+        `Failed to toggle favourites ${error.message}`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
   }
 }

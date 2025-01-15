@@ -10,10 +10,6 @@ export class FilebaseService {
     const S3_SECRET = process.env.FILEBASE_SECRET;
     const bucketName = process.env.BUCKET_NAME;
 
-    console.log("S3_KEY:", S3_KEY);
-    console.log("S3_SECRET:", S3_SECRET);
-    console.log("BUCKET_NAME:", bucketName);
-
     if (!S3_KEY || !S3_SECRET || !bucketName) {
       throw new Error(
         "FILEBASE CREDENTIALS ARE NOT SET IN ENVIRONMET VARIABLES",
@@ -37,6 +33,13 @@ export class FilebaseService {
       return uploadedObject;
     } catch (error) {
       throw new Error(`Failed to upload file ${error.message}`);
+    }
+  }
+  async downloadAssetMockUp(key: string, options?: object) {
+    try {
+      return await this.objectManager.download(key, {});
+    } catch (error) {
+      throw new Error(`Failed to download file ${error.message}`);
     }
   }
 }

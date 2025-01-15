@@ -34,6 +34,11 @@
     flex-direction: row;
     justify-content: right;
 }
+.rating{
+    align-self: center;
+    margin-right: 10px;
+    border: 1px solid black;
+}
 .iconEdit{
     width: 10%;
     height: 10%;
@@ -45,6 +50,8 @@
     margin-right: 10px;
 }
 .iconFavourite{
+    width: 10%;
+    height: 10%;
     margin-right: 10px;
 }
 .iconDelete{
