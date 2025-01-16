@@ -5,13 +5,14 @@ import styles from "./ProfilePage.module.css"
 import {Button, Loader, Tabs} from "@mantine/core";
 import {IconHeart, IconPlus, IconShoppingCartCheck, IconUpload} from "@tabler/icons-react";
 import {getCookie} from "../../utils/getCookie.ts";
-import {useFetchAssets} from "../../hooks/useFetchAssets.ts";
 import {AssetListItem} from "../../components/AssetListItem.tsx";
 import {ListTabEnum} from "../../types/ListTabEnum.ts";
 import {useFetchProfileAssets} from "../../hooks/useFetchProfileAssets.ts";
+import {whoami} from "../../utils/whoami.ts";
 
 export const ProfilePage = () => {
     const [user, setUser] = useState(null);
+    const [userID, setUserID] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
@@ -24,13 +25,12 @@ export const ProfilePage = () => {
             .catch(error => {
                 navigate("/login")
             });
-    }, [navigate])
+    }, [])
     const {
         boughtAssets,
         uploadedAssets,
         favouriteAssets,
-        error
-    } = useFetchProfileAssets(`http://localhost:3000/api/assets/profile/20`)
+    } = useFetchProfileAssets(`http://localhost:3000/api/assets/profile/${user?.ID}`)
 
     if (loading) {
         return <Loader color="blue"/>;
