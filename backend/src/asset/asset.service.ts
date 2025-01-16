@@ -235,7 +235,14 @@ export class AssetService {
       },
     });
   }
-
+  async getIsAssetAlreadyRatedByMe(userID: number, assetID: number) {
+    return this.database.rates.findFirst({
+      where: {
+        id_user: userID,
+        id_asset: assetID,
+      },
+    });
+  }
   giveRating(userID: number, assetID: number, rate: number) {
     return this.database.rates.create({
       data: {

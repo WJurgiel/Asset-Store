@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import {AssetGridItemProps} from "../types/AssetGriditemProps.ts";
-import {Rating} from "@mantine/core";
 import {IconHeart, IconHeartFilled, IconShoppingCartPlus} from "@tabler/icons-react";
 import styles from './AssetGridItem.module.css'
 import {useNavigate} from "react-router-dom";
 import {toggleFavourites} from "../utils/toggleFavourites.ts";
 import {whoami} from "../utils/whoami.ts";
 import {getMyFavourites} from "../utils/getMyFavourites.ts";
+import {RatingStars} from "./RatingStars.tsx";
 
 export const AssetGridItem: React.FC<AssetGridItemProps> = ({
                                                                 ID,
@@ -23,8 +23,8 @@ export const AssetGridItem: React.FC<AssetGridItemProps> = ({
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const usrId = await whoami(); // Pobieramy userID
-                setUserID(usrId); // Ustawiamy userID
+                const usrId = await whoami();
+                setUserID(usrId);
 
                 const fav = await getMyFavourites(usrId);
                 setMyFavourites(fav);
@@ -90,7 +90,8 @@ export const AssetGridItem: React.FC<AssetGridItemProps> = ({
                     textAlign: 'center',
                 }}
             >
-                <Rating value={averageRate} fractions={2} readOnly/>
+                <RatingStars defaultValue={averageRate} rate={averageRate} fractions={2}
+                             isReadOnly={true}></RatingStars>
             </div>
             <div style={{color: '#555', fontSize: '14px'}}>{`PRICE: ${price} ZL`}</div>
             {/*action buttons*/}

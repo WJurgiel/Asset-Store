@@ -170,8 +170,18 @@ export class AssetController {
   }
 
   @Post("/rating")
-  createRate(@Body(ValidationPipe) createRateDto: CreateRateDto) {
-    return this.assetService.createRate(createRateDto);
+  async createRate(@Body(ValidationPipe) createRateDto: CreateRateDto) {
+    const { id_user, id_asset } = createRateDto;
+    const isAlreadyRatedByMe =
+      await this.assetService.getIsAssetAlreadyRatedByMe(id_user, id_asset);
+    if (!isAlreadyRatedByMe) {
+      return this.assetService.createRate(createRateDto);
+    }
+    return {
+      message: "Couldn't add rate, because you already did that",
+      error: "Bad Request",
+      statusCode: HttpStatus.BAD_REQUEST,
+    };
   }
   @Post("/favourite")
   async toggleFavourites(

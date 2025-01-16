@@ -3,6 +3,7 @@ import {AssetGridItemProps} from "../types/AssetGriditemProps.ts";
 import styles from "../features/shop/ProductPage.module.css";
 import {ActionIcon, Button, Rating} from "@mantine/core";
 import {IconHeart} from "@tabler/icons-react";
+import {RatingStars} from "./RatingStars.tsx";
 
 const Product: React.FC<AssetGridItemProps> = ({
                                                    name,
@@ -41,7 +42,12 @@ const Product: React.FC<AssetGridItemProps> = ({
                         <a>{date.toLocaleDateString()}</a>
                     </div>
                     <div style={{display: "flex", flexDirection: "row"}}>
-                        <Rating value={averageRate} fractions={2} size="xl" readOnly/>
+                        <RatingStars
+                            defaultValue={averageRate}
+                            rate={averageRate}
+                            isReadOnly={true}
+                            fractions={2}
+                        ></RatingStars>
                         <IconHeart style={{height: "5vh", width: "5vh"}} stroke={1.5}/>
                         <h3 style={{
                             height: "5vh",

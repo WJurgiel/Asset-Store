@@ -1,10 +1,11 @@
 import React from 'react'
 import {useNavigate} from "react-router-dom";
 import styles from './AssetListItem.module.css'
-import {ActionIcon, Rating} from "@mantine/core";
+import {ActionIcon} from "@mantine/core";
 import {ListTabEnum} from "../types/ListTabEnum.ts";
 import {IconDownload, IconHeart, IconPencil, IconX} from "@tabler/icons-react";
 import {AssetListItemProp} from "../types/AssetListItemProp.ts";
+import {RatingStars} from "./RatingStars.tsx";
 
 export const AssetListItem: React.FC<AssetListItemProp> = ({
                                                                ID,
@@ -14,13 +15,19 @@ export const AssetListItem: React.FC<AssetListItemProp> = ({
                                                                listType
                                                            }) => {
     const navigate = useNavigate();
+    const handleGiveRating = () => {
+        console.log("rate given");
+    }
     return (
         <div className={styles.bg}>
             <img className={styles.image} src={img_url} onClick={() => navigate(`/product/${ID}`)}/>
             <h2 className={styles.assetName} onClick={() => navigate(`/product/${ID}`)}>{name}</h2>
             <div className={styles.icons}>
                 {listType === ListTabEnum.bought &&
-                    <Rating className={styles.rating} defaultValue={averageRate} fractions={2}/>}
+                    <RatingStars defaultValue={averageRate} rate={averageRate} isReadOnly={false}
+                                 fractions={2} onChange={handleGiveRating} className={styles.rating}></RatingStars>
+                    // <Rating className={styles.rating} defaultValue={averageRate} fractions={2}/>
+                }
                 {listType === ListTabEnum.bought &&
                     <ActionIcon className={styles.iconFavourite} variant="outline" color="indigo" size="lg"
                                 aria-label="Settings">
