@@ -110,6 +110,17 @@ export class AssetController {
   getMyFavourites(@Query("userID", ParseIntPipe) id: number) {
     return this.assetService.getMyFavourites(id);
   }
+  @Get("/rating")
+  async getIsAssetAlreadyRatedByMe(
+    @Query("userID", ParseIntPipe) id: number,
+    @Query("assetID", ParseIntPipe) assetID: number,
+  ) {
+    const isThere = await this.assetService.getIsAssetAlreadyRatedByMe(
+      id,
+      assetID,
+    );
+    return !!isThere;
+  }
   @Post()
   create(@Body(ValidationPipe) createAssetDto: CreateAssetsDto) {
     return this.assetService.create(createAssetDto);
