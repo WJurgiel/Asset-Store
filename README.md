@@ -17,6 +17,7 @@ This is the first project where I created fully working REST Api, that connects 
 
 - Logged in users can create new assets, add asset to favourites and rate them 
 - Home page with the latest posted assets
+  
 ![image](https://github.com/user-attachments/assets/669b9760-f196-42a9-81ac-88a77dd6182f)
-![image](https://github.com/user-attachments/assets/6f7c5e8f-29ba-4d35-815d-9d0596a9f9f6)
+![asset2](https://github.com/user-attachments/assets/73ef263b-f5cc-410b-b220-7cef68e97cd6)
 
