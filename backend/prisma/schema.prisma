@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model assets {
+  ID                           Int            @id @default(autoincrement())
+  name                         String         @db.VarChar(100)
+  img_url                      String         @map("img-url") @db.VarChar(2083)
+  id_author                    Int            @map("id-author")
+  description                  String?        @default("") @db.VarChar(255)
+  type                         assets_type
+  price                        Int?           @default(0)
+  upload_date                  DateTime       @default(now()) @map("upload-date") @db.Date
+  users                        users          @relation(fields: [id_author], references: [ID], onDelete: Cascade, map: "pk_users_assets")
+  favorites                    favorites[]
+  rates_rates_id_assetToassets rates[]        @relation("rates_id_assetToassets")
+  rates_rates_id_userToassets  rates[]        @relation("rates_id_userToassets")
+  transactions                 transactions[]
+
+  @@index([id_author], map: "pk_users_assets")
+}
+
+model favorites {
+  ID       Int    @id @default(autoincrement())
+  id_user  Int    @map("id-user")
+  id_asset Int    @map("id-asset")
+  assets   assets @relation(fields: [id_asset], references: [ID], onDelete: Cascade, map: "pk_assets_fav")
+  users    users  @relation(fields: [id_user], references: [ID], onDelete: Cascade, map: "pk_users_fav")
+
+  @@index([id_asset], map: "pk_assets_fav")
+  @@index([id_user], map: "pk_users_fav")
+}
+
+model rates {
+  ID                            Int    @id @default(autoincrement())
+  id_user                       Int    @map("id-user")
+  id_asset                      Int    @map("id-asset")
+  rate                          Int
+  assets_rates_id_assetToassets assets @relation("rates_id_assetToassets", fields: [id_asset], references: [ID], onDelete: Cascade, map: "pk_assets_rates")
+  assets_rates_id_userToassets  assets @relation("rates_id_userToassets", fields: [id_user], references: [ID], onDelete: Cascade, map: "pk_users_rates")
+
+  @@index([id_asset], map: "pk_assets_rates")
+  @@index([id_user], map: "pk_users_rates")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model transactions {
+  ID       Int               @id @default(autoincrement())
+  id_user  Int               @map("id-user")
+  id_asset Int               @map("id-asset")
+  type     transactions_type
+  assets   assets            @relation(fields: [id_asset], references: [ID], onDelete: Cascade, map: "pk_assets_transac")
+  users    users             @relation(fields: [id_user], references: [ID], onDelete: Cascade, map: "pk_users_transac")
+
+  @@index([id_asset], map: "pk_assets_transac")
+  @@index([id_user], map: "pk_users_transac")
+}
+
+model users {
+  ID            Int            @id @default(autoincrement())
+  nickname      String         @db.VarChar(25)
+  creation_date DateTime       @default(now()) @map("creation-date") @db.Date
+  email         String         @unique(map: "unique-email") @db.VarChar(50)
+  password      String         @db.VarChar(50)
+  assets        assets[]
+  favorites     favorites[]
+  transactions  transactions[]
+}
+
+enum transactions_type {
+  bought
+  uploaded
+}
+
+enum assets_type {
+  twoD   @map("2D")
+  threeD @map("3D")
+  SFX    @map("SFX")
+}

@@ -1,0 +1,32 @@
+.bg{
+    height:100vh;
+    background-color:#d9d9d9;
+    display:flex;
+    flex-direction: column;
+    text-align: center;
+}
+.container{
+    background-color: #e8e8e8;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 30px 40px;
+    height: 60vh;
+    width: 80vw;
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+}
+.list{
+    background-color: #a8a8a8;
+    margin: 10px 10px;
+    width: 40vw;
+}
+.addButton{
+    width: 10vw;
+    align-self: center;
+    font-weight: bold;
+}
+.panel{
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 56vh;
+}

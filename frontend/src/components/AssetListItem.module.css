@@ -1,0 +1,61 @@
+.bg{
+    background-color: #d8d8d8;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px  rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+
+}
+.bg:hover {
+    transform: scale(1.01);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+.image{
+    width: 10%;
+    height: 10%;
+    margin-top: 5px;
+    align-self: center;
+    cursor: pointer;
+}
+.assetName{
+    font-size: 3rem;
+    margin-left: 1vw;
+    text-align: left;
+    width:50%;
+    margin-top: 2rem;
+    cursor: pointer;
+}
+.icons{
+    width: 70%;
+    height:100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+.rating{
+    align-self: center;
+    margin-right: 10px;
+    border: 1px solid black;
+}
+.iconEdit{
+    width: 10%;
+    height: 10%;
+    margin-right: 10px;
+}
+.iconDownload{
+    width: 10%;
+    height: 10%;
+    margin-right: 10px;
+}
+.iconFavourite{
+    width: 10%;
+    height: 10%;
+    margin-right: 10px;
+}
+.iconDelete{
+    width: 10%;
+    height: 10%;
+    margin-right: 5px;
+}
